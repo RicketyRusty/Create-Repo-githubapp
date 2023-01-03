@@ -41,7 +41,7 @@ export class GithubOauthStrategy extends PassportStrategy(Strategy, 'github') { 
 			githubId: profile.id,
 			displayName: profile.displayName,
 			username: profile.username,
-			profilePhoto: profile.photos
+			profilePhoto: profile.photos[0]
 		} 
 		console.log(userData.profilePhoto[0])
 		const user = await this.usersService.findOrCreate(userData);

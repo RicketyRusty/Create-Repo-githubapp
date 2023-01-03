@@ -7,5 +7,5 @@ export interface UserData {
 
     username: string;
 
-	profilePhoto: string;
+	profilePhoto: {value : string};
 }

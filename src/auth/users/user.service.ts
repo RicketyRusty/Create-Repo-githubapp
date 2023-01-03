@@ -21,14 +21,5 @@ export class UserService {
   			const newUser = this.userRepository.create(userData);
   			await this.userRepository.save(newUser);
   			return newUser;
-		
-		// return {
-		// 	provider: user.provider,
-		// 	providerId: user.providerId,
-		// 	displayName: user.displayName,
-		// 	username: user.username,
-		// 	photos: user.photos,
-		// 	// user.photos[0].value
-		// };
 	}
 }
