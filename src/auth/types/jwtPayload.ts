@@ -1,7 +1,7 @@
 //Content of JWT token
 export type JwtPayload = {
 	//Internal user ID
-	sub: string;
+	sub: number;
 
 	//JWT issue at
 	iat?: number;
@@ -9,7 +9,9 @@ export type JwtPayload = {
 	//Expiration time
 	exp?: number;
 
-	displayName: string;
+	displayName?: string;
+
+	githubId: string;
 
     username: string;
 

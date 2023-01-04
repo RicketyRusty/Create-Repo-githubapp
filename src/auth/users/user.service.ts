@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
-import { UserData } from 'src/types/userData';
 import { Repository } from 'typeorm';
+import { User } from '../entities/user.entity';
+import { githubUserData } from '../types';
 
 @Injectable()
 export class UserService {
@@ -12,14 +12,23 @@ export class UserService {
         private readonly userRepository: Repository<User>
     ) {}
 
-    async findOrCreate(userData: UserData): Promise<any> {	//specify an dto
+    async findOrCreate(userdata: githubUserData): Promise<User> {	
+		//TO DO : Optimize query
 
-		const user = await this.userRepository.findOne({where: {githubId: userData.githubId}});
+		const user = await this.userRepository.findOne({where: {githubId: userdata.githubId}});
   			if (user) {
-    			return user;
+    			await this.userRepository.update({id: user.id}, {
+					githubId: userdata.githubId,
+					username: userdata.username,
+					displayName: userdata.displayName,
+					profilePhoto: userdata.profilePhoto,
+					githubaccessToken: userdata.githubaccessToken,
+				});
   			}
-  			const newUser = this.userRepository.create(userData);
-  			await this.userRepository.save(newUser);
-  			return newUser;
+			else {
+				const newUser = this.userRepository.create(userdata);
+  				await this.userRepository.save(newUser);
+			}
+  			return this.userRepository.findOne({where: {githubId: userdata.githubId}});
 	}
 }

@@ -1,6 +1,6 @@
-export interface UserData {
+//User Data fetched from github
+export interface githubUserData {
 	
-	//The userID in provider service
 	githubId: string;
 
 	displayName: string;
@@ -8,4 +8,6 @@ export interface UserData {
     username: string;
 
 	profilePhoto: {value : string};
+
+	githubaccessToken: string;
 }

@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-github';
-import { JwtPayload } from 'src/types/jwtAuth';
-import { UserData } from 'src/types/userData';
+import { User } from '../entities';
+import { githubUserData, UserData} from '../types';
 import { UserService } from '../users/user.service';
 
 //import { AppConfig } from '../../config/interfaces';
@@ -37,22 +37,26 @@ export class GithubOauthStrategy extends PassportStrategy(Strategy, 'github') { 
 		// (e.g., creating the user property on the Request object), and the request
 		// handling pipeline can continue.
 
-		const userData: UserData = {
+		const githubUserData: githubUserData = {
 			githubId: profile.id,
 			displayName: profile.displayName,
 			username: profile.username,
-			profilePhoto: profile.photos[0]
-		} 
-		console.log(userData.profilePhoto[0])
-		const user = await this.usersService.findOrCreate(userData);
-		if (!user) {
+			profilePhoto: profile.photos[0],
+			githubaccessToken: accessToken
+		}
+		
+		const userDB = await this.usersService.findOrCreate(githubUserData);
+		if (!userDB) {
 			throw new UnauthorizedException();
 		}
-		//return user;
-
-        // console.log(accessToken);
-        // console.log(_refreshToken);
-        // console.log(profile);
-		// console.log(user);
+		const user: UserData = {
+			id: userDB.id,
+			githubId: userDB.githubId,
+			username: userDB.username,
+			displayName: userDB.displayName,
+			photo: userDB.profilePhoto,
+			githubaccessToken: userDB.githubaccessToken,
+		}
+		return user;
 	}
 }
