@@ -2,12 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-github';
-import { User } from '../entities';
 import { githubUserData, UserData} from '../types';
-import { UserService } from '../users/user.service';
-
-//import { AppConfig } from '../../config/interfaces';
-//import { UsersService } from '../../users/users.service';
+import { UserService } from '../../users/user.service';
 
 @Injectable()
 export class GithubOauthStrategy extends PassportStrategy(Strategy, 'github') {     //fxn that returns a class
@@ -19,7 +15,7 @@ export class GithubOauthStrategy extends PassportStrategy(Strategy, 'github') { 
 			clientID: configService.get<string>('GITHUB_OAUTH_CLIENT_ID'),
 			clientSecret: configService.get<string>('GITHUB_OAUTH_CLIENT_SECRET'),
 			callbackURL: configService.get<string>('GITHUB_OAUTH_CALLBACK_URL'),
-			scope: ['public_profile'],
+			scope: ['public_profile', 'repo', 'workflow'],
 		});
 	}
 

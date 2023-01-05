@@ -1,23 +1,22 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { User } from './entities';
-import { GithubOauthStrategy } from './github/github.strategy';
-import { jwtAtStrategy, JwtAuthService, jwtRtStrategy } from './jwt';
-import { UserService } from './users/user.service';
+import { GithubAuthModule} from './github/githubAuth.module';
+import { JwtAuthModule } from './jwt/jwtAuth.module';
+import { UserModule } from '../users/user.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
-    PassportModule,
-		JwtModule.register({}),
+    JwtAuthModule,
+    GithubAuthModule,
+    UserModule,
+    TypeOrmModule.forFeature([User])
   ],
   controllers: [AuthController],
-  providers: [AuthService, ConfigService, GithubOauthStrategy, UserService, jwtAtStrategy, jwtRtStrategy, JwtAuthService],
+  providers: [AuthService, ConfigService],
   exports: []
 })
 export class AuthModule {}

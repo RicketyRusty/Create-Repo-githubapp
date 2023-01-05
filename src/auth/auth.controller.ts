@@ -19,11 +19,13 @@ export class AuthController {
     //Redirect URL for successfull/failed authentication
     @Get('github/callback')
     @UseGuards(GithubOauthGuard)
+    @Render('login')
     async githubCallback(@Req() req: Request, @Res({ passthrough: true }) res: Response){
         const user = req.user as UserData;
         const {access_token, refresh_token} = await this.authService.githubCallback(user)
 		res.cookie('jwt', access_token);
-		return {
+        res.cookie('jwtr', refresh_token);
+    	return {
 			access_token: access_token,
 			refresh_token: refresh_token,
 		}
@@ -33,27 +35,27 @@ export class AuthController {
 	@Get('profile')
     @Render('login')
 	getProfile(@Req() req: Request) {
-		return req.user;
+        //
 	}
 
     @UseGuards(JwtAuthGuard)
-    @Post('logout')
+    @Get('logout')
     @Render('login')
     logout(@Req() req: Request, @Res() res: Response) {
         const user = req.user as UserData;
-        return this.authService.logout(user.id);
-        
+        return this.authService.logout(user.id); 
     }
 
     @UseGuards(JwtRefreshGuard)
-    @Post('refresh')
+    @Get('refresh')
     @Render('login')
     refreshToken(@Req() req: Request,  @Res() res: Response): Promise<Tokens> {
         const user = req.user; 
         //return this.authService.refreshToken(user['sub'], user['refreshToken']);
         //check any ? Tokens
         const token: any = this.authService.refreshToken(user['sub'], user['refreshToken']);
-        res.cookie('jwt', token.access_token)
+        res.cookie('jwt', token.access_token);
+        res.cookie('jwtr', token.refresh_token);
         return token;
     }
 }
