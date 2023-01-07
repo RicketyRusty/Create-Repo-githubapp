@@ -1,5 +1,9 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Octokit } from '@octokit/rest';
+import { Render, Req, Res, UseGuards } from '@nestjs/common/decorators';
+import { JwtAuthGuard } from 'src/auth/jwtAuth/jwt.guard';
+import { UserData } from 'src/auth/types';
+import { Request, Response } from 'express';
+import { CreateRepoDto } from './dto/createRepo.dto';
 import { GitRepositoryService } from './git-repository.service';
 
 @Controller('github')
@@ -9,21 +13,18 @@ export class GitRepositoryController {
     private gitRepositoryService: GitRepositoryService,
     ) {}
 
+    @UseGuards(JwtAuthGuard)
     @Get('repository')
+    @Render('create')
     async repositoryHome() {
-    //Render Create Repository Page
-    //return data;
+      return {msg : "github create page"}
     }
   
-    @Get('createrepository')
-    async createRepository(
-      //@Body('repositoryName') repositoryName: string,
-      //@Body('filePath') filePath: string,
-      //@Body('fileContent') fileContent: string,
-      //@Body('auth') auth: string,
-    ) {
-      await this.gitRepositoryService.create()
-      //content: Buffer.from(fileContent).toString('base64'),
-      //return data;
+    @UseGuards(JwtAuthGuard)
+    @Post('createrepository')
+    async createRepository(@Req() req: Request, @Body() repodata: CreateRepoDto, @Res() res: Response) {
+      const userdata = req.user as UserData;
+      const result = await this.gitRepositoryService.create(repodata, userdata)
+      return result;
     }
 }
