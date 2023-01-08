@@ -25,10 +25,12 @@ export class GitRepositoryController {
     @Post('create-repository')
     async createRepository(@Req() req: Request, @Body() repodata: CreateRepoDto, @Res() res: Response) {
       const userdata = req.user as UserData;
-      const result = await this.gitRepositoryService.create(repodata, userdata)
-      if(result.status === 201){
-        //Flash Message
+      const {status, data} = await this.gitRepositoryService.create(repodata, userdata)
+      if(status === 201){
+        const url = data.content.html_url;
+        return res.redirect(url)
+      } else {
+        return res.redirect('/github/repository')
       }
-      return res.redirect('repository')
     }
 }
