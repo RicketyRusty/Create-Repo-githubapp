@@ -2,6 +2,7 @@
 /dist
 /node_modules
 
+
 # Logs
 logs
 *.log
@@ -11,6 +12,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 issue.txt
+githubapp.db
 
 # OS
 .DS_Store
