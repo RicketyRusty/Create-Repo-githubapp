@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/entities/user.entity';
 import { GitRepositoryModule } from './git-repository/git-repository.module';
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
+
 
 @Module({
   imports: [
@@ -17,7 +20,7 @@ import { GitRepositoryModule } from './git-repository/git-repository.module';
       synchronize: true
     }),
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

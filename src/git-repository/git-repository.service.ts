@@ -1,13 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Octokit } from '@octokit/rest';
 import { User } from 'src/auth/entities';
 import { UserData } from 'src/auth/types';
 import { Repository } from 'typeorm';
 import { CreateRepoDto } from './dto/createRepo.dto';
-import * as fs from 'fs';
 import { Base64 } from 'js-base64';
-import { join } from 'path';
+
 
 @Injectable()
 export class GitRepositoryService {
@@ -27,23 +26,23 @@ export class GitRepositoryService {
         })
 
         if (!repos.data.map((repo) => repo.name).includes(repodata.repositoryName)){
-            const resultRepo = await this.createRepo(
+            
+            const {status, data} = await this.createRepo(
                 octokit, 
                 user.username, 
                 repodata.repositoryName, 
                 repodata.privacy,
                 repodata.description
             );
-            console.log(resultRepo)
+            if(status === 201){
+                console.log("Repo Created")
+            }
         } else {
-            console.log("Repo Already Exist")
+            throw new HttpException("Unable to create repository", 400);
         }
 
-       // const content = fs.readFileSync("./HelloCPP.txt", "utf-8");
-        //const contentEncoded = Base64.encode(content);
-        const contentEncoded  = btoa("abcd")
-        //Process result
-         const resultFile = await this.createOrUpdate(
+        const contentEncoded  = await  this.getFiledata(userdata);
+         const {status, data} = await this.createOrUpdate(
                 octokit, 
                 user.username,
                 contentEncoded, 
@@ -51,26 +50,41 @@ export class GitRepositoryService {
                 repodata.path,
                 repodata.description,
             );
-
-        //Process Result 
-        return resultFile;
+            if(status === 201){
+                console.log("File Created")
+                return {status, data}
+            }
+            else {
+                throw new HttpException("Unable to add file", 400);
+            }
     }   
 
 
-    async createRepo(octokit: Octokit, owner: string, name: string, privacy: boolean, description: string){
-        const {data} = await octokit.repos.createForAuthenticatedUser({ owner, name, description, private: privacy, auto_init: true })
-        return data;
+    async createRepo(octokit: Octokit, owner: string, name: string, _privacy: boolean, description: string){
+        const {status, data} = await octokit.repos.createForAuthenticatedUser({ 
+            owner, 
+            name, 
+            description, 
+            private: _privacy, 
+            auto_init: false })
+        return {status, data};
     }
 
-    async createOrUpdate(octokit: Octokit, owner: string, content: string, repo: string, path: string, description: string){
-        const { data } = await octokit.repos.createOrUpdateFileContents({
-            owner: owner,
-            repo: repo,
-            path: path,
-            message: description ,
-            content: content,
+    async createOrUpdate(octokit: Octokit, _owner: string, _content: string, _repo: string, _path: string, _description: string){
+        const {status, data} = await octokit.repos.createOrUpdateFileContents({
+            owner: _owner,
+            repo: _repo,
+            path: _path,
+            message: _description ,
+            content: _content,
         }); 
+        return {status, data}
+    };
+
+    async getFiledata(userdata: UserData){
+        let fact = "Hello World";
+        const text = `hello hello ${userdata.username}, ${fact}`;
+        const data = Base64.encode(text);
         return data;
     }
-
 }
