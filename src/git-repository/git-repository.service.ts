@@ -79,7 +79,7 @@ export class GitRepositoryService {
             content: _content,
         }); 
         return {status, data}
-    };
+    }
 
     async getFiledata(userdata: UserData){
         let fact = "Hello World";
