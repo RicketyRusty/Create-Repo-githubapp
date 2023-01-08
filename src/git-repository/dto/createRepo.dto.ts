@@ -7,12 +7,11 @@ export class CreateRepoDto {
     readonly repositoryName: string;
 
     @IsString()
-    readonly path: string;
+    readonly path?: string;
 
-    @Transform((value) => Boolean(value))
     @IsBoolean()
     readonly privacy: boolean;
 
     @IsString()
-    readonly description: string;
+    readonly description?: string;
 }

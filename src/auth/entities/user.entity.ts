@@ -22,6 +22,10 @@ export class User {
     @Column({ nullable: true})
     githubaccessToken: string;
 
-    @Column({nullable: true})
-    jwtrefreshToken: string;
+    @Column({
+        type: 'text',
+        unique: true,
+        nullable: true,
+    })
+    jwtrefreshToken!: string | null;
 }

@@ -6,10 +6,12 @@ import { GitRepositoryController } from './git-repository.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/auth/entities';
 import { checkBoolean } from 'src/middleware/checkBool.middleware';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
     UserModule,
+    HttpModule.register({timeout: 5000,maxRedirects: 5,}),
     TypeOrmModule.forFeature([User])
   ],
   providers: [

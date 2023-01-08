@@ -30,6 +30,7 @@ export class AuthService {
     }
 
     async refreshToken(userID: number, refreshT : string) {
+        console.log("Refresh invoked : Auth Service")
         const user = await this.userService.findOne(userID);
         if (!user || !user.jwtrefreshToken) {
             throw new ForbiddenException('Access Denied');

@@ -6,6 +6,9 @@ import { UserData } from 'src/auth/types';
 import { Repository } from 'typeorm';
 import { CreateRepoDto } from './dto/createRepo.dto';
 import { Base64 } from 'js-base64';
+import { HttpService } from '@nestjs/axios';
+import { catchError, firstValueFrom } from 'rxjs';
+import { AxiosError } from 'axios';
 
 
 @Injectable()
@@ -13,7 +16,8 @@ export class GitRepositoryService {
 
     constructor(
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
+        private readonly userRepository: Repository<User>,
+        private readonly httpService: HttpService
     ) {}
     
     async create(repodata: CreateRepoDto, userdata: UserData) {
@@ -82,9 +86,17 @@ export class GitRepositoryService {
     }
 
     async getFiledata(userdata: UserData){
-        let fact = "Hello World";
-        const text = `hello hello ${userdata.username}, ${fact}`;
-        const data = Base64.encode(text);
-        return data;
+        const { data } = await firstValueFrom(
+            this.httpService.get<any>('https://catfact.ninja/fact').pipe(
+              catchError((error: AxiosError) => {
+                console.log(error);
+                throw 'An error happened!';
+              }),
+            ),
+          );
+        let fact = data.fact;  
+        const text = `hello ${userdata.displayName}!, ${fact}`;
+        const encodedText = Base64.encode(text);
+        return encodedText ;
     }
 }
