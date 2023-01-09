@@ -1,4 +1,4 @@
-import { Controller, Get, Render, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Render, Req, Res, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { optAuthGuard } from './auth/jwtAuth/jwt.guard';
 import { Request, Response } from 'express';
@@ -10,6 +10,11 @@ export class AppController {
         private appService: AppService,
     ) {}
 
+    @Get()
+    goToHome(@Res() res: Response) {
+        res.redirect('/home')
+    }
+    
     @UseGuards(optAuthGuard)
     @Get('home')
     @Render('home')
