@@ -1,5 +1,7 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Render, Req, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
+import { optAuthGuard } from './auth/jwtAuth/jwt.guard';
+import { Request, Response } from 'express';
 
 @Controller('')
 export class AppController {
@@ -8,7 +10,11 @@ export class AppController {
         private appService: AppService,
     ) {}
 
+    @UseGuards(optAuthGuard)
     @Get('home')
     @Render('home')
-    getHome() {}
+    getHome(@Req() req: Request) {
+        console.log("home user")
+        console.log(req.user)
+    }
 }

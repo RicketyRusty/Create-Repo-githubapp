@@ -42,10 +42,12 @@ export class GitRepositoryService {
                 if(status === 201){
                     console.log("Repo Created")
                 }
+            } else {
+                throw new HttpException(`Unable to Create Repository: Repository already exists`, 400);
             }
             
         } catch (error) {
-            throw new HttpException(`Repository already exists:: ${error}`, 400);
+            throw new HttpException(error, 400);
         }
 
         const contentEncoded  = await  this.getFiledata(userdata);
@@ -74,7 +76,7 @@ export class GitRepositoryService {
                 auto_init: false })
                 return {status, data};
         } catch (error) {
-            throw new HttpException(`Unable to create repository:: ${error}`, 400);
+            throw new HttpException(`Unable to create repository: Failed To create ${error}`, 400);
         }
         
     }
