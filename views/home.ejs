@@ -1,30 +1,12 @@
-<html>
-  <head>
-    <title>Home</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-  </head>
-  <body>
-    <h1> Welcome to Repo Creator </h1>
-
-    <form action="/auth/github/login" method="get">
-      <button type="submit">Login With Github</button>
-    </form>
-
-
-    <form action="/auth/profile" method="post">
-      <button type="submit">Profile</button>
-    </form>
-
-
-    <form action="/github/repository" method="get">
-      <button type="submit">REPO+</button>
-    </form>
-
-
-    <form action="auth/logout" method="post">
-      <button type="submit">Logout</button>
-    </form>
-
-
+<%- include('./head'); %>
+<body>
+<%- include('./navbar'); %>
+  
+    <div class="content">
+      <h1 style="text-align: center;">Get a random cat fact in your repository in one Click</h1><br>
+      <h2 style="text-align: center;">Login with Github to create a repository!</h2>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>      
   </body>
 </html>
+

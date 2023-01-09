@@ -105,7 +105,7 @@ export class GitRepositoryService {
             ),
           );
         let fact = data.fact;  
-        const text = `Hello **${userdata.displayName}**!<br/> This Repository is created using Create-Repo-App by Anamitra. <br/> Here's a random Cat fact for you :smiley_cat: <br/> ${fact}`;
+        const text = `Hello **${userdata.displayName}**!<br/> This Repository is created using Create-Repo-App by Anamitra. <br/> Here's a random Cat fact for you :smiley_cat: <br/>*${fact}*`;
         const encodedText = Base64.encode(text);
         return encodedText ;
     }

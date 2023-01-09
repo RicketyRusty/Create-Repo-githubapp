@@ -1,0 +1,35 @@
+  <nav class="navbar navbar-expand-sm bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <% if (isAuthenticated) { %>
+          <img src= "<%= photo %>" alt="Logo" width="30" height="30" class="d-inline-block align-text-top"> <%= user %></a>
+        <% } else { %>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiLmRB6EGGANr2X2b4mgYRcLjHngkqpwB-WQ&usqp=CAU" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">Create Repo App</a>
+        <% } %>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="<%= (path === 'home' ? 'nav-link active' : 'nav-link') %>" aria-current="page" href="/home"><b>Home</b></a>
+          </li>
+          <li class="nav-item">
+            <a class="<%= (path === 'create' ? 'nav-link active' : 'nav-link') %>" href="/github/create"><b>Create</b></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/auth/profile"><b>Profile</b></a>
+          </li>
+          <% if (!isAuthenticated) { %>
+            <form action="/auth/github/login" method="get" class="login-btn">
+              <button type="submit" class="btn btn-dark">Login With Github</button>
+            </form>
+          <% } else { %>
+            <form action="/auth/logout" method="post" class="login-btn">
+              <button type="submit" class="btn btn-dark">Logout</button>
+            </form>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>

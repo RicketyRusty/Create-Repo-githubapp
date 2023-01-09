@@ -1,0 +1,17 @@
+#Environment Variable Files
+.env
+.env.sample
+#Read me file
+issue.txt
+README.md
+#SQLite Database
+githubapp.db
+#Test Coverage
+/test
+#Node modules
+**/node_modules/
+#Build
+**/dist
+#Logs
+.git
+npm-debug.log

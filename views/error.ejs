@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html>  
-    <head>
-        <title>  </title>
-    </head>     
-    <body>
-        <h1>Error <%= status %></h1>
-        <p><%= message %></p>
-        <p>Redirecting to home...</p>
+<%- include('./head'); %>
+<body>  
+    <div class="content", style = "position:relative; top:100px">
+        <h1 style="text-align: center;">Error <%= status %></h1>
+        <h3 style="text-align: center;"><%= message %></h3>
+        <h5 style="text-align: center;">Redirecting...</h5>
         <script>
             setTimeout(function () {
-               window.location = "/home";
-            }, 5000)
-          </script>
-    </body>
+               window.location = "<%= link %>";
+            }, 3000)
+        </script>
+    </div>
+</body>
 </html>

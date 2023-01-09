@@ -20,7 +20,6 @@ export class AuthController {
     @Get('github/callback')
     @UseGuards(GithubOauthGuard)
     @UseFilters(badReqFilter,UnAuthFilter)
-    @Render('home')
     async githubCallback(@Req() req: Request, @Res({ passthrough: true }) res: Response){
         const user = req.user as UserData;
         const {access_token, refresh_token} = await this.authService.githubCallback(user)
@@ -31,7 +30,7 @@ export class AuthController {
 
     @UseGuards(JwtAuthGuard)
     @UseFilters(badReqFilter, UnAuthFilter)
-	@Post('profile')
+	@Get('profile')
 	getProfile(@Req() req: Request, @Res() res: Response) {
         const user = req.user as UserData;
         const url = `https://github.com/${user.username}`;

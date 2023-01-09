@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Render, Req, Res, UseFilters, UseGuards } from '@nestjs/common/decorators';
+import { Req, Res, UseFilters, UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from 'src/auth/jwtAuth/jwt.guard';
 import { UserData } from 'src/auth/types';
 import { Request, Response } from 'express';
@@ -16,9 +16,11 @@ export class GitRepositoryController {
 
     @UseGuards(JwtAuthGuard)
     @UseFilters(badReqFilter,UnAuthFilter)
-    @Get('repository')
-    @Render('form')
-    async repositoryHome() {}
+    @Get('create')
+    async repositoryHome(@Req() req: Request, @Res() res: Response) {
+      const user = req.user as UserData;
+      return res.render('form', {isAuthenticated: true, user: user.displayName, photo: user.photo, pageTitle: 'Create Repository',  path: 'create'})
+    }
   
     @UseGuards(JwtAuthGuard)
     @UseFilters(badReqFilter, UnAuthFilter)
