@@ -14,10 +14,14 @@ import { AppController } from './app.controller';
     GitRepositoryModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      type :"sqlite",
-      database: "githubapp.db",
-      entities: [User],
-      synchronize: true
+      type: "postgres",
+      host: "localhost",
+      port: 5432,
+      username: "postgres",
+      password: "postgres",
+      database: "githubapp",
+      autoLoadEntities: true,
+      synchronize: true 
     }),
   ],
   controllers: [AppController],
