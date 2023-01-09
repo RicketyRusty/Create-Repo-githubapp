@@ -6,15 +6,18 @@ import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { NotFoundFilter } from './exception-filters/notfound.exception';
 import { HttpExceptionFilter } from './exception-filters';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.useGlobalFilters(new HttpExceptionFilter(), new NotFoundFilter());
+  const configService = app.get(ConfigService);
   app.useStaticAssets(join(__dirname, '..' , 'public'));
   app.setBaseViewsDir(join(__dirname, '..' , 'views'));
   app.setViewEngine('ejs');
-  await app.listen(3000);
+  const PORT = configService.get<number>('PORT');
+  await app.listen(PORT);
 }
 bootstrap();
