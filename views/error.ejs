@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>  
+    <head>
+        <title>  </title>
+    </head>     
+    <body>
+        <h1>Error <%= status %></h1>
+        <p><%= message %></p>
+        <p>Redirecting to home...</p>
+        <script>
+            setTimeout(function () {
+               window.location = "/home";
+            }, 5000)
+          </script>
+    </body>
+</html>

@@ -4,7 +4,7 @@ import { GithubOauthGuard } from './githubAuth/github.guard';
 import { Tokens, UserData } from './types';
 import { Request, Response } from 'express';
 import { JwtAuthGuard, JwtRefreshGuard } from './jwtAuth/jwt.guard';
-import { UnAuthFilter } from 'src/exception-filters';
+import { UnAuthFilter, badReqFilter } from 'src/exception-filters';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +19,7 @@ export class AuthController {
     //Redirect URL for successfull/failed authentication
     @Get('github/callback')
     @UseGuards(GithubOauthGuard)
-    @UseFilters(UnAuthFilter)
+    @UseFilters(badReqFilter,UnAuthFilter)
     @Render('home')
     async githubCallback(@Req() req: Request, @Res({ passthrough: true }) res: Response){
         const user = req.user as UserData;
@@ -30,7 +30,7 @@ export class AuthController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @UseFilters(UnAuthFilter)
+    @UseFilters(badReqFilter, UnAuthFilter)
 	@Post('profile')
 	getProfile(@Req() req: Request, @Res() res: Response) {
         const user = req.user as UserData;
@@ -39,7 +39,7 @@ export class AuthController {
 	}
 
     @UseGuards(JwtAuthGuard)
-    @UseFilters(UnAuthFilter)
+    @UseFilters(badReqFilter, UnAuthFilter)
     @Post('logout')
     logout(@Req() req: Request, @Res() res: Response) {
         const user = req.user as UserData;
@@ -50,7 +50,7 @@ export class AuthController {
     }
 
     @UseGuards(JwtRefreshGuard)
-    @UseFilters(UnAuthFilter)
+    @UseFilters(badReqFilter, UnAuthFilter)
     @Get('refresh')
     async refreshToken(@Req() req: Request, @Res() res: Response) {
         const user = req.user; 

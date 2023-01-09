@@ -8,6 +8,7 @@ export class NotFoundFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
 
-    response.status(status).redirect('/home');
+    //response.status(status).redirect('/home');
+    response.render('error.ejs', {status: 404, message: 'Page Not Found'})
   }
 }

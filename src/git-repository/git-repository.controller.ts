@@ -5,7 +5,7 @@ import { UserData } from 'src/auth/types';
 import { Request, Response } from 'express';
 import { CreateRepoDto } from './dto/createRepo.dto';
 import { GitRepositoryService } from './git-repository.service';
-import { UnAuthFilter } from 'src/exception-filters';
+import { UnAuthFilter, badReqFilter } from 'src/exception-filters';
 
 @Controller('github')
 export class GitRepositoryController {
@@ -15,13 +15,13 @@ export class GitRepositoryController {
     ) {}
 
     @UseGuards(JwtAuthGuard)
-    @UseFilters(UnAuthFilter)
+    @UseFilters(badReqFilter,UnAuthFilter)
     @Get('repository')
     @Render('form')
     async repositoryHome() {}
   
     @UseGuards(JwtAuthGuard)
-    @UseFilters(UnAuthFilter)
+    @UseFilters(badReqFilter, UnAuthFilter)
     @Post('create-repository')
     async createRepository(@Req() req: Request, @Body() repodata: CreateRepoDto, @Res() res: Response) {
       const userdata = req.user as UserData;
