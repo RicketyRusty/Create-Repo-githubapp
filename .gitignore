@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /node_modules
+*.db
 
 
 # Logs
@@ -12,7 +13,6 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 issue.txt
-githubapp.db
 
 # OS
 .DS_Store
