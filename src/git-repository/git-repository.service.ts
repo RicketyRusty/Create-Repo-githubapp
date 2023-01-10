@@ -76,7 +76,7 @@ export class GitRepositoryService {
                 auto_init: false })
                 return {status, data};
         } catch (error) {
-            throw new HttpException(`Unable to create repository: Failed To create ${error}`, 400);
+            throw new HttpException(error, 400);
         }
         
     }
@@ -92,7 +92,7 @@ export class GitRepositoryService {
             }); 
             return {status, data}
         } catch (error) {
-            throw new HttpException(`Unable to add file::${error}`, 400);
+            throw new HttpException(error, 400);
         }
     }
     async getFiledata(userdata: UserData){

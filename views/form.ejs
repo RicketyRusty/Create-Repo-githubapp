@@ -1,6 +1,99 @@
 <%- include('./head'); %>
+<style>
+body {
+font-family: Arial, sans-serif;
+padding: 20px;
+overflow-y: auto;
+}
+  
+.navbar-nav{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.nav-item{
+  padding: 0 3vh;
+}
+.login-btn{
+  align-self: center;
+  position: absolute;
+  right: 0;
+}
+.login-btn button{
+  border-radius: 0%;
+}
+.content{
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h3{
+  padding: 2% 0 0 0;
+}
+.product-from-control{
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: auto;
+}
+.form-control{
+  border: unset;
+}
+.create-repo-btn{
+  margin: 2vh 0;
+  width: 40%;
+  align-self: center;
+}
+
+@media screen and (max-width: 678px) {
+  .product-from-control{
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 578px) {
+  .navbar-nav{
+    align-items: center;
+  }
+  .login-btn{
+    align-self: unset;
+    position: unset;
+    right: unset;
+  }
+  .product-from-control{
+    width: 90%;
+  }
+  .create-repo-btn{
+    width: 100%;
+  }
+
+}
+  label {
+    font-weight: bold;
+    padding: 1vh 0;
+  }
+  
+  #github-button {
+    width: 25%;
+    background-color: #6e5494;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  #github-button:hover {
+    background-color: #5c4780;
+  }
+</style>
 <body>
 <%- include('./navbar'); %>
+
 
 <h3 style="text-align: center;">Create Github Repository</h1>
 <h4 style="text-align: center;">Get a random fact in your repository</h2>

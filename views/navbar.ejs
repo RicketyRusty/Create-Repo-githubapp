@@ -11,6 +11,7 @@
         </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
           <li class="nav-item">
             <a class="<%= (path === 'home' ? 'nav-link active' : 'nav-link') %>" aria-current="page" href="/home"><b>Home</b></a>
           </li>
@@ -20,6 +21,7 @@
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/auth/profile"><b>Profile</b></a>
           </li>
+          
           <% if (!isAuthenticated) { %>
             <form action="/auth/github/login" method="get" class="login-btn">
               <button type="submit" class="btn btn-dark">Login With Github</button>
