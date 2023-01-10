@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Logger, Post } from '@nestjs/common';
 import { Req, Res, UseFilters, UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from 'src/auth/jwtAuth/jwt.guard';
 import { UserData } from 'src/auth/types';
@@ -29,6 +29,9 @@ export class GitRepositoryController {
     @Post('create-repository')
     async createRepository(@Req() req: Request, @Body() repodata: CreateRepoDto, @Res() res: Response) {
       const userdata = req.user as UserData;
+      if(repodata.repositoryName === ''){
+        throw new HttpException(`Repository Name cannot be empty`, 400);
+      }
       this.logger.verbose(`User ${userdata.username} initiated create repository ${repodata.repositoryName}`);
       const {status, data} = await this.gitRepositoryService.create(repodata, userdata)
       if(status === 201){
