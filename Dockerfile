@@ -1,3 +1,4 @@
+# Build: docker build -t myapp .
 FROM node:16.19-alpine AS development
 
 WORKDIR /usr/src/app

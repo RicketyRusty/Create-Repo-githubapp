@@ -1,6 +1,9 @@
 #Environment Variable Files
 .env
 .env.sample
+.env.docker
+.dockerignore
+Dockerfile
 #Read me file
 issue.txt
 README.md
@@ -15,3 +18,4 @@ githubapp.db
 #Logs
 .git
 npm-debug.log
+

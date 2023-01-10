@@ -3,7 +3,7 @@
 /node_modules
 *.db
 .env
-
+.env.docker
 
 # Logs
 logs
