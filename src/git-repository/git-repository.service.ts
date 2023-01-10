@@ -21,15 +21,15 @@ export class GitRepositoryService {
     ) {}
     
     async create(repodata: CreateRepoDto, userdata: UserData) {
-        const user = await this.userRepository.findOne({where: {id: userdata.id}});
+        const user = await this.userRepository.findOne({where: {githubId: userdata.githubId}})
         const auth = user.githubaccessToken;
         const octokit = new Octokit({auth});
-
+        //Create Repo and Add file
         try {
             const repos = await octokit.repos.listForAuthenticatedUser({
                 owner: user.username,
             })
-
+                //Check if repository exists or not
                 if (!repos.data.map((repo) => repo.name).includes(repodata.repositoryName)){
             
                  const {status, data} = await this.createRepo(
@@ -80,7 +80,7 @@ export class GitRepositoryService {
         }
         
     }
-
+    
     async createOrUpdate(octokit: Octokit, _owner: string, _content: string, _repo: string, _path: string, _description: string = 'facts'){
         try {
             const {status, data} = await octokit.repos.createOrUpdateFileContents({
@@ -95,6 +95,8 @@ export class GitRepositoryService {
             throw new HttpException(error, 400);
         }
     }
+
+    //Function to get fact and generate Base64 data for creating file
     async getFiledata(userdata: UserData){
         const { data } = await firstValueFrom(
             this.httpService.get<any>('https://catfact.ninja/fact').pipe(
@@ -105,7 +107,7 @@ export class GitRepositoryService {
             ),
           );
         let fact = data.fact;  
-        const text = `Hello **${userdata.displayName}**!<br/> This Repository is created using Create-Repo-App by Anamitra. <br/> Here's a random Cat fact for you :smiley_cat: <br/>*${fact}*`;
+        const text = `Hello **${userdata.displayName||userdata.username}**!<br/> This Repository is created using Create-Repo-App by Anamitra. <br/> Here's a random Cat fact for you :smiley_cat: <br/>*${fact}*`;
         const encodedText = Base64.encode(text);
         return encodedText ;
     }

@@ -1,13 +1,16 @@
-import { Controller, Get, Post, Redirect, Render, Req, Res, UseFilters, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GithubOauthGuard } from './githubAuth/github.guard';
-import { Tokens, UserData } from './types';
+import { UserData } from './types';
 import { Request, Response } from 'express';
 import { JwtAuthGuard, JwtRefreshGuard } from './jwtAuth/jwt.guard';
 import { UnAuthFilter, badReqFilter } from 'src/exception-filters';
+import { Logger } from '@nestjs/common';
+import { timestamp } from 'rxjs';
 
 @Controller('auth')
 export class AuthController {
+    private logger = new Logger('AuthenticationLog');
     constructor(
         private authService: AuthService,
     ) {}
@@ -25,6 +28,7 @@ export class AuthController {
         const {access_token, refresh_token} = await this.authService.githubCallback(user)
 		res.cookie('jwt', access_token);
         res.cookie('jwtr', refresh_token);
+        this.logger.verbose(`User ${user.username} logged in`);
         return res.redirect('../../home');
     }
 
@@ -45,6 +49,7 @@ export class AuthController {
         this.authService.logout(user.id);
         res.clearCookie('jwt');
         res.clearCookie('jwtr');
+        this.logger.verbose(`User ${user.username} logged out`);
         return res.redirect('../../home');
     }
 

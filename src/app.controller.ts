@@ -21,7 +21,7 @@ export class AppController {
     getHome(@Req() req: Request, @Res() res: Response) {
         if(req.user){
             const user = req.user as UserData;
-            return res.render('home', {isAuthenticated: true, user: user.displayName, photo: user.photo, pageTitle: 'Home', path: 'home'})
+            return res.render('home', {isAuthenticated: true, user: user.displayName||user.username, photo: user.photo, pageTitle: 'Home', path: 'home'})
         }
         else {
             return res.render('home', {isAuthenticated: false, pageTitle: 'Home', path: 'home'})

@@ -25,7 +25,6 @@ export class AuthService {
     }
    
     async logout(userID: number) {
-        console.log("logout invoked : Auth Service")
         return await this.userService.deleteRTHash(userID);
     }
 

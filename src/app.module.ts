@@ -22,7 +22,7 @@ import { AppController } from './app.controller';
       password: configService.get<string>('DB_PASSWORD'),
       database: configService.get<string>('DB_NAME'),
       autoLoadEntities: true,
-      //synchronize: true 
+      synchronize: true 
       }),
       inject: [ConfigService],
     }),
