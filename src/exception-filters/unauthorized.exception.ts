@@ -8,7 +8,7 @@ export class UnAuthFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
-    this.logger.error(`Unauthorized: ${exception.message}`)
+    this.logger.log(`Unauthorized: ${exception.message}`)
     response.status(status).redirect('/auth/github/login');
   }
 }
