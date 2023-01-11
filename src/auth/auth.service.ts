@@ -23,6 +23,10 @@ export class AuthService {
 			refresh_token: refresh_token,
 		}
     }
+
+    async revokeAccess(userID: number) {
+        return await this.userService.deleteUser(userID);
+    }
    
     async logout(userID: number) {
         return await this.userService.deleteRTHash(userID);

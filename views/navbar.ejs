@@ -19,9 +19,14 @@
           <li class="nav-item">
             <a class="<%= (path === 'create' ? 'nav-link active' : 'nav-link') %>" href="/github/create"><b>Create</b></a>
           </li>
+          <% if (isAuthenticated) { %>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/auth/profile"><b>Profile</b></a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/auth/revoke"><b>Revoke Access</b></a>
+          </li>
+          <% } %>
           <div>
           <% if (!isAuthenticated) { %>
             <form action="/auth/github/login" method="get" class="login-btn">

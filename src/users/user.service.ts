@@ -45,6 +45,10 @@ export class UserService {
 		return user;
 	}
 
+	async deleteUser(userID: number) {
+		return await this.userRepository.delete({id: userID});
+	}
+
 	async updateRTHash(userID: number , rtoken: string){
 		const hash = await argon.hash(rtoken);
 		return await this.userRepository.update({id: userID}, {jwtrefreshToken: hash});

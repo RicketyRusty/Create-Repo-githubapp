@@ -27,5 +27,5 @@ export class User {
         unique: true,
         nullable: true,
     })
-    jwtrefreshToken!: string | null;
+    jwtrefreshToken: string | null;
 }

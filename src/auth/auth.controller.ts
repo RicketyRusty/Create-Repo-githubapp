@@ -43,10 +43,21 @@ export class AuthController {
 
     @UseGuards(JwtAuthGuard)
     @UseFilters(badReqFilter, UnAuthFilter)
+	@Get('revoke')
+	async revokeAccess(@Req() req: Request, @Res() res: Response) {
+        await this.authService.revokeAccess(req.user['sub']);
+        res.clearCookie('jwt');
+        res.clearCookie('jwtr');
+        this.logger.verbose(`User ${req.user['username']} Revoked Access and Logged Out`);
+        return res.redirect('../../home')    
+	}
+
+    @UseGuards(JwtAuthGuard)
+    @UseFilters(badReqFilter, UnAuthFilter)
     @Post('logout')
     logout(@Req() req: Request, @Res() res: Response) {
         const user = req.user as UserData;
-        this.authService.logout(user.id);
+        this.authService.logout(user['sub']);
         res.clearCookie('jwt');
         res.clearCookie('jwtr');
         this.logger.verbose(`User ${user.username} logged out`);
