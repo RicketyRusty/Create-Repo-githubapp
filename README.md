@@ -3,9 +3,6 @@
 This is a Github application that creates a repository in authorized profile and adds a sample file to it. 
 It uses Github OAuth and JWT for authentication. It needs 'repo' and 'workflow' permissions to execute the tasks.
 
-DISCLAIMER: 
-The app is tested for most of the cases. There is chances of data being overwritten. Please use carefully 
-
 ## Installation
 
 ```bash
