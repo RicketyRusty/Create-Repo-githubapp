@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { GithubAuthModule} from './githubAuth/githubAuth.module';
+import { GithubAuthModule } from './githubAuth/githubAuth.module';
 import { JwtAuthModule } from './jwtAuth/jwtAuth.module';
 import { UserModule } from '../users/user.module';
 
@@ -12,4 +12,4 @@ import { UserModule } from '../users/user.module';
   providers: [AuthService, ConfigService],
   exports: []
 })
-export class AuthModule {}
+export class AuthModule { }

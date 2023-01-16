@@ -12,8 +12,8 @@ export interface UserData {
 	//github name
 	displayName: string;
 
-	//Profile Picture URL s
-	photo: {value: string};
+	//Profile Picture URL 
+	photo: { value: string };
 
 	//access token of user
 	githubaccessToken: string;

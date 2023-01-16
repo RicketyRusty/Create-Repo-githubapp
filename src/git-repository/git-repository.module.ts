@@ -11,12 +11,12 @@ import { HttpModule } from '@nestjs/axios';
 @Module({
   imports: [
     UserModule,
-    HttpModule.register({timeout: 5000,maxRedirects: 5,}),
+    HttpModule.register({ timeout: 5000, maxRedirects: 5, }),
     TypeOrmModule.forFeature([User])
   ],
   providers: [
-    GitRepositoryService, 
-    {provide: Octokit,useValue: new Octokit()}
+    GitRepositoryService,
+    { provide: Octokit, useValue: new Octokit() }
   ],
   controllers: [GitRepositoryController],
   exports: []

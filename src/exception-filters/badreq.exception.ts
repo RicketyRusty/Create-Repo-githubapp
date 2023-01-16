@@ -9,6 +9,6 @@ export class badReqFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
     this.logger.log(`Bad Request: ${exception.message}`);
-    response.render('error.ejs', {status: status, message: exception.message, link: '/github/create', pageTitle: 'Error'});
+    response.render('error.ejs', { status: status, message: exception.message, link: '/github/create', pageTitle: 'Error' });
   }
 }

@@ -13,7 +13,7 @@ export type JwtPayload = {
 
 	githubId: string;
 
-    username: string;
+	username: string;
 
 	photo?: string;
 };

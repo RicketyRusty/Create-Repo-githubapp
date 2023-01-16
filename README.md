@@ -1,7 +1,6 @@
 ## Description
 
-This is a Github application that creates a repository in authorized profile and adds a sample file to it. 
-It uses Github OAuth and JWT for authentication. It needs 'repo' and 'workflow' permissions to execute the tasks.
+This application allows users to log in with their GitHub account and create a repository with a sample file using the application. It uses GitHub OAuth for authentication and JSON Web Token (JWT) for request authentication. It requires 'public profile', 'repo', and 'workflow' permission from the user. PostgresDB/SQLite for user data storage.
 
 ## Installation
 
@@ -37,7 +36,7 @@ $ npm run test:cov
 
 ## Stay in touch
 
-- Author - [Anamitra Saikia]
+- Author - Anamitra Saikia
 - LinkedIn - [anamitra-saikia](https://www.linkedin.com/in/anamitra-saikia/)
 - Twitter - [@anamitra_s](https://twitter.com/anamitra_s)
 

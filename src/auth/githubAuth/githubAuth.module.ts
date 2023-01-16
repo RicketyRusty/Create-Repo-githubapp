@@ -5,6 +5,6 @@ import { GithubOauthStrategy } from './github.strategy';
 @Module({
     imports: [UserModule],
     providers: [GithubOauthStrategy],
-    exports:[]
+    exports: []
 })
-export class GithubAuthModule {}
+export class GithubAuthModule { }

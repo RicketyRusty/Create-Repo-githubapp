@@ -8,10 +8,10 @@ export class JwtAuthService {
 	constructor(
 		private jwtService: JwtService,
 		private configService: ConfigService
-	) {}
+	) { }
 
 	async signToken(user: UserData): Promise<Tokens> {
-		const { id, githubId, displayName, username, photo} = user;
+		const { id, githubId, displayName, username, photo } = user;
 		const payload: JwtPayload = {
 			sub: id,
 			githubId,
@@ -22,18 +22,18 @@ export class JwtAuthService {
 
 		const [accessT, refreshT] = await Promise.all([
 			this.jwtService.signAsync(payload, {
-			  secret: this.configService.get<string>('AT_SECRET'),
-			  expiresIn: '1h',
+				secret: this.configService.get<string>('AT_SECRET'),
+				expiresIn: '15m',
 			}),
 			this.jwtService.signAsync(payload, {
-			  secret: this.configService.get<string>('RT_SECRET'),
-			  expiresIn: '7d',
+				secret: this.configService.get<string>('RT_SECRET'),
+				expiresIn: '7d',
 			}),
-		  ]);
-	  
-		  return {
+		]);
+
+		return {
 			access_token: accessT,
 			refresh_token: refreshT,
-		  };
+		};
 	}
 }

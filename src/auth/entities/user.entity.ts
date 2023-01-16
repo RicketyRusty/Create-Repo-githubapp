@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
 
-@Entity({name: 'users'})
+@Entity({ name: 'users' })
 @Unique(['githubId'])
 export class User {
 
@@ -13,13 +13,13 @@ export class User {
     @Column()
     username: string
 
-    @Column({nullable: true, default: ''})
+    @Column({ nullable: true, default: '' })
     displayName: string;
 
-    @Column({nullable: true, type: "simple-json", default: 'https://avatars.githubusercontent.com/u/28536201'})
-    profilePhoto: {value : string};
+    @Column({ nullable: true, type: "simple-json", default: 'https://avatars.githubusercontent.com/u/28536201' })
+    profilePhoto: { value: string };
 
-    @Column({ nullable: true})
+    @Column({ nullable: true })
     githubaccessToken: string;
 
     @Column({

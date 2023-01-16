@@ -2,11 +2,11 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-github';
-import { githubUserData, UserData} from '../types';
+import { githubUserData, UserData } from '../types';
 import { UserService } from '../../users/user.service';
 
 @Injectable()
-export class GithubOauthStrategy extends PassportStrategy(Strategy, 'github') {    
+export class GithubOauthStrategy extends PassportStrategy(Strategy, 'github') {
 	constructor(
 		private configService: ConfigService,
 		private usersService: UserService,
@@ -26,8 +26,8 @@ export class GithubOauthStrategy extends PassportStrategy(Strategy, 'github') {
 			username: profile.username,
 			profilePhoto: profile.photos[0],
 			githubaccessToken: accessToken
-		}
-		
+		};
+
 		const userDB = await this.usersService.findOrCreate(githubUserData);
 		if (!userDB) {
 			throw new UnauthorizedException();
@@ -39,7 +39,7 @@ export class GithubOauthStrategy extends PassportStrategy(Strategy, 'github') {
 			displayName: userDB.displayName,
 			photo: userDB.profilePhoto,
 			githubaccessToken: userDB.githubaccessToken,
-		}
+		};
 		return user;
 	}
 }

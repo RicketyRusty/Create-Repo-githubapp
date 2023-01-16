@@ -8,9 +8,9 @@ import { JwtModule } from '@nestjs/jwt';
 @Module({
     imports: [
         PassportModule,
-		JwtModule.register({}),
+        JwtModule.register({}),
     ],
     providers: [JwtAuthService, jwtAtStrategy, jwtRtStrategy],
-    exports:[JwtAuthService]
+    exports: [JwtAuthService]
 })
-export class JwtAuthModule {}
+export class JwtAuthModule { }
