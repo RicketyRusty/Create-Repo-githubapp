@@ -24,77 +24,88 @@ export class GitRepositoryService {
         const user = await this.userRepository.findOne({where: {githubId: userdata.githubId}})
         const auth = user.githubaccessToken;
         const octokit = new Octokit({auth});
-        //Create Repo and Add file
         try {
-            const repos = await octokit.repos.listForAuthenticatedUser({
-                owner: user.username,
-            })
-                //Check if repository exists or not
-                if (!repos.data.map((repo) => repo.name).includes(repodata.repositoryName)){
-            
-                 const resultRepo = await this.createRepo(
+            const isValid = await this.checkRepo(octokit, user.username, repodata.repositoryName);
+            if (isValid){
+                 const responseRepo = await this.createRepo(
                     octokit, 
                     user.username, 
                     repodata.repositoryName, 
                     repodata.privacy,
                     repodata.description
                 );
-                if(resultRepo.status === 201){
-                    this.logger.verbose(`User ${user.username} Created Repository ${repodata.repositoryName}`)
+                if(responseRepo.status === 201){
+                    this.logger.verbose(`User ${user.username} Created Repository ${responseRepo.data.name}`)
                 }
-                console.log(resultRepo.data.name)
                 
+                const contentEncoded  = await  this.getFiledata(userdata);
+                const responseFile = await this.createOrUpdate(
+                        octokit, 
+                        user.username,
+                        contentEncoded, 
+                        responseRepo.data.name, 
+                        repodata.path,
+                        repodata.description,
+                );
+                if(responseFile.status === 201){
+                    this.logger.verbose(`User ${user.username} Created File ${responseFile.data.content.name}`)
+                }
+                return responseFile;
+
             } else {
-                throw new HttpException(`Unable to Create Repository: Repository already exists`, 400);
+                throw new HttpException(`Unable to Create Repository`, 400);
             }
             
         } catch (error) {
             throw new HttpException(error, 400);
         }
-
-        const contentEncoded  = await  this.getFiledata(userdata);
-         const {status, data} = await this.createOrUpdate(
-                octokit, 
-                user.username,
-                contentEncoded, 
-                repodata.repositoryName, 
-                repodata.path,
-                repodata.description,
-            );
-            if(status === 201){
-                console.log("File Created")
-                return {status, data}
+    }
+    
+    //Function to check if repository exists or not
+    async checkRepo(octokit: Octokit, owner: string, repoName: string): Promise<boolean>{
+        try{
+            const repos = await octokit.repos.listForAuthenticatedUser({
+                owner: owner,
+            })
+            if(!repos.data.map((repo) => repo.name).includes(repoName)){
+                return true;
+            } else {
+                throw new HttpException(`Unable to Create Repository: Repository already exists`, 400);
             }
-    }       
+        } catch (error) {
+            throw new HttpException(error, 400);
+        }
+    }
 
-
+    //Function to create repository
     async createRepo(octokit: Octokit, owner: string, name: string, _privacy: boolean, description: string){
         try{
-            const {status, data} = await octokit.repos.createForAuthenticatedUser({ 
+            const responseRepo = await octokit.repos.createForAuthenticatedUser({ 
                 owner, 
                 name, 
                 description, 
                 private: _privacy, 
                 auto_init: false })
-                return {status, data};
+                return responseRepo;
         } catch (error) {
-            throw new HttpException(error, 400);
+            throw new HttpException(`failed to create Repository`, 400);
         }
         
     }
     
+    //Function to create or update file
     async createOrUpdate(octokit: Octokit, _owner: string, _content: string, _repo: string, _path: string, _description: string = 'facts'){
         try {
-            const {status, data} = await octokit.repos.createOrUpdateFileContents({
+            const reponseFile = await octokit.repos.createOrUpdateFileContents({
                 owner: _owner,
                 repo: _repo,
                 path: `${_path}.md`,
                 message: _description ,
                 content: _content,
             }); 
-            return {status, data}
+            return reponseFile;
         } catch (error) {
-            throw new HttpException(error, 400);
+            throw new HttpException(`Failed to create File`, 400);
         }
     }
 
@@ -104,7 +115,7 @@ export class GitRepositoryService {
             this.httpService.get<any>('https://catfact.ninja/fact').pipe(
               catchError((error: AxiosError) => {
                 console.log(error);
-                throw 'An error happened!';
+                throw new HttpException(`Unable to fetch data`, 400);;
               }),
             ),
           );

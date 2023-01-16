@@ -20,6 +20,6 @@ async function bootstrap() {
   app.setViewEngine('ejs');
   const PORT = configService.get<number>('PORT') || 5000;
   await app.listen(PORT);
-  logger.log(`Server running on ${PORT}`);
+  logger.log(`Server running on Port ${PORT}`);
 }
 bootstrap();

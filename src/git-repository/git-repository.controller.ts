@@ -5,7 +5,7 @@ import { UserData } from 'src/auth/types';
 import { Request, Response } from 'express';
 import { CreateRepoDto } from './dto/createRepo.dto';
 import { GitRepositoryService } from './git-repository.service';
-import { UnAuthFilter, badReqFilter } from 'src/exception-filters';
+import { HttpExceptionFilter, UnAuthFilter, badReqFilter } from 'src/exception-filters';
 
 @Controller('github')
 export class GitRepositoryController {
@@ -36,10 +36,12 @@ export class GitRepositoryController {
       const {status, data} = await this.gitRepositoryService.create(repodata, userdata)
       if(status === 201){
         const url = data.content.html_url;
-        this.logger.verbose(`User ${userdata.username} created repository ${repodata.repositoryName}`);
+        this.logger.verbose(`User ${userdata.username} Successfully created repository ${repodata.repositoryName} at ${url}`);
         return res.redirect(url)
       } else {
+        this.logger.verbose(`User ${userdata.username} Failed to create repository ${repodata.repositoryName}`);
         return res.redirect('/github/repository')
+        
       }
     }
 }

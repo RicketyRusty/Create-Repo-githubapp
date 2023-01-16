@@ -10,6 +10,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>(); 
     const status = exception.getStatus(); 
     this.logger.log(`Error: ${exception.message}`); 
-    response.render('error.ejs', {status: status, message: exception.message, link: '/home', pageTitle: 'Error'}); 
+    response.render('error.ejs', {status: status, message: exception.message, link: '/github/create', pageTitle: 'Error'}); 
   } 
 }
