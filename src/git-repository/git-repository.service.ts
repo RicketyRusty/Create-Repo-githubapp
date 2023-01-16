@@ -89,7 +89,7 @@ export class GitRepositoryService {
             });
             return responseRepo;
         } catch (error) {
-            throw new HttpException(`failed to create Repository`, 400);
+            throw new HttpException(error, 400);
         }
 
     }
