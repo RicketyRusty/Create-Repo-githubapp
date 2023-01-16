@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Octokit } from '@octokit/rest';
 import { User } from 'src/auth/entities';
@@ -13,7 +13,7 @@ import { AxiosError } from 'axios';
 
 @Injectable()
 export class GitRepositoryService {
-
+    private logger = new Logger('GithubRepository');
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
@@ -32,16 +32,18 @@ export class GitRepositoryService {
                 //Check if repository exists or not
                 if (!repos.data.map((repo) => repo.name).includes(repodata.repositoryName)){
             
-                 const {status, data} = await this.createRepo(
+                 const resultRepo = await this.createRepo(
                     octokit, 
                     user.username, 
                     repodata.repositoryName, 
                     repodata.privacy,
                     repodata.description
                 );
-                if(status === 201){
-                    console.log("Repo Created")
+                if(resultRepo.status === 201){
+                    this.logger.verbose(`User ${user.username} Created Repository ${repodata.repositoryName}`)
                 }
+                console.log(resultRepo.data.name)
+                
             } else {
                 throw new HttpException(`Unable to Create Repository: Repository already exists`, 400);
             }

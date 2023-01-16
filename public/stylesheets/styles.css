@@ -47,9 +47,17 @@ h3{
   width: 40%;
   align-self: center;
 }
-/* input[type=checkbox]:checked {
-  background-color: #212529;
-} */
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+
 @media screen and (max-width: 678px) {
   .product-from-control{
     width: 80%;
